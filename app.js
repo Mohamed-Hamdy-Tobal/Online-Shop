@@ -1,11 +1,18 @@
 import dotenv from "dotenv";
 import express from "express";
+import mongoose from "mongoose";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
 dotenv.config();
 
 const app = express();
+
+const url = process.env.MONGO_URL;
+
+mongoose.connect(url).then(() => {
+  console.log("mongodb server started");
+});
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
