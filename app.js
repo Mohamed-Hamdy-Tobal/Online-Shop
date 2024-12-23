@@ -11,12 +11,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 app.use(express.static(join(__dirname, "assets")));
+app.use(express.static(join(__dirname, "public")));
 
 app.set("view engine", "ejs");
 app.set("views", "views");
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.render("index");
 });
 
 app.listen(process.env.PORT || 8000, () => {
