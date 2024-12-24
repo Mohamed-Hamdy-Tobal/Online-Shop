@@ -3,6 +3,8 @@ import express from "express";
 import mongoose from "mongoose";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+import { homeRouter } from "./routes/home.route.js";
+import cors from "cors";
 
 dotenv.config();
 
@@ -17,15 +19,16 @@ mongoose.connect(url).then(() => {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+app.use(cors());
 app.use(express.static(join(__dirname, "assets")));
 app.use(express.static(join(__dirname, "public")));
+app.use(express.static(join(__dirname, "images")));
 
 app.set("view engine", "ejs");
 app.set("views", "views");
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
+// Routers
+app.use("/", homeRouter);
 
 app.listen(process.env.PORT || 8000, () => {
   console.log("app is running");
