@@ -5,7 +5,10 @@
     <div
       class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between"
     >
-      <a class="h-full flex justify-center items-center" href="#">
+      <a
+        class="h-full flex justify-center items-center"
+        href="/product/<%= product.id %>"
+      >
         <img
           class="rounded-t-lg object-contain max-w-[220px]"
           src="<%= product.image %>"
@@ -14,7 +17,7 @@
       </a>
       <div class="p-5 h-fit flex justify-between items-start flex-col gap-4">
         <div class="info">
-          <a href="#">
+          <a href="/product/<%= product.id %>">
             <h5
               class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
             >
@@ -98,7 +101,12 @@
     </div>
 
     <% }); %> <% } else { %>
-    <p class="text-center text-gray-500">No products found.</p>
+    <div
+      class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+      role="alert"
+    >
+      <span class="font-medium">Danger alert!</span> No products found.
+    </div>
     <% } %>
   </div>
 </div>
