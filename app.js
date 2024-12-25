@@ -5,6 +5,7 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { homeRouter } from "./routes/home.route.js";
 import cors from "cors";
+import { productRouter } from "./routes/product.route.js";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.set("views", "views");
 
 // Routers
 app.use("/", homeRouter);
+app.use("/product", productRouter);
 
 app.listen(process.env.PORT || 8000, () => {
   console.log("app is running");

@@ -1,0 +1,25 @@
+<% if (product && product.id){ %>
+<div class="flex justify-between items-start gap-5">
+  <div class="basis-1/2">
+    <img src="/<%= product.image %>" alt="Image" />
+  </div>
+  <div class="info flex justify-start items-start flex-col basis-1/2">
+    <h5
+      class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+    >
+      <%= product.name %>
+    </h5>
+    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 line-clamp-2">
+      <%= product.description %>
+    </p>
+    <p class="text-[#1d4ed8] text-xl">Price : <%= product.price %> $</p>
+  </div>
+</div>
+<% } else { %>
+<div
+  class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+  role="alert"
+>
+  <span class="font-medium">Danger alert!</span> Product Not Found
+</div>
+<% } %>
