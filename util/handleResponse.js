@@ -8,9 +8,14 @@ export const handleResponse = (
     status,
     error,
     renderView = null,
+    redirectUrl = null,
   }
 ) => {
   if (success) {
+    if (redirectUrl) {
+      return res.redirect(status || 302, redirectUrl);
+    }
+
     if (renderView) {
       return res.render(renderView, {
         [dataKey]: data || [],

@@ -87,4 +87,36 @@ export const postSignup = async (req, res, next) => {
   }
 };
 
-export const postLogin = async (req, res, next) => {};
+export const postLogin = async (req, res, next) => {
+  console.log("BODY : ", req.body);
+
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return handleResponse(res, {
+      status: STATUS_CODES.FAIL,
+      message: "Please provide both email and password",
+    });
+  }
+
+  const user = await UserModel.findOne({ email }).select("+password");
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return handleResponse(res, {
+      status: STATUS_CODES.AUTH,
+      message: "Invalid credentials!",
+    });
+  }
+
+  const access_token = await generateToken({
+    email: user.email,
+    id: user._id,
+  });
+  
+  return handleResponse(res, {
+    success: true,
+    status: STATUS_CODES.SUCCESS,
+    message: "Login Successfully",
+    data: {
+      access_token,
+    },
+  });
+};

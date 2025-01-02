@@ -10,8 +10,6 @@ import multer from "multer";
 const router = express.Router();
 
 router.route("/signup").get(getSignup).post(multer().any(), postSignup);
-
-router.get("/login", getLogin);
-router.post("/login", postLogin);
+router.route("/login").get(getLogin).post(multer().any(), postLogin);
 
 export const authRouter = router;
