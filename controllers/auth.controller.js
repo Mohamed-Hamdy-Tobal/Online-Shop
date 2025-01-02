@@ -3,7 +3,6 @@ import { handleResponse } from "../util/handleResponse.js";
 import { STATUS_CODES } from "../util/StatusCodes.js";
 import bcrypt from "bcryptjs";
 import Joi from "joi";
-import generateToken from "../util/generateToken.js";
 
 const signupSchema = Joi.object({
   firstName: Joi.string().min(2).required(),
@@ -55,13 +54,6 @@ export const postSignup = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    const token = await generateToken({
-      email: newUser.email,
-      id: newUser._id,
-    });
-
-    newUser.access_token = token;
-
     await newUser.save();
 
     return handleResponse(res, {
@@ -106,17 +98,12 @@ export const postLogin = async (req, res, next) => {
     });
   }
 
-  const access_token = await generateToken({
-    email: user.email,
-    id: user._id,
-  });
-  
   return handleResponse(res, {
     success: true,
     status: STATUS_CODES.SUCCESS,
     message: "Login Successfully",
     data: {
-      access_token,
+      user,
     },
   });
 };
