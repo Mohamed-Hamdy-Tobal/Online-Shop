@@ -637,6 +637,10 @@ video {
   margin-top: 1rem;
 }
 
+.me-2 {
+  margin-inline-end: 0.5rem;
+}
+
 .line-clamp-2 {
   overflow: hidden;
   display: -webkit-box;
@@ -646,6 +650,10 @@ video {
 
 .block {
   display: block;
+}
+
+.inline-block {
+  display: inline-block;
 }
 
 .flex {
@@ -725,6 +733,10 @@ video {
   flex-basis: 50%;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -771,6 +783,10 @@ video {
 
 .gap-6 {
   gap: 1.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
 }
 
 .space-x-3 > :not([hidden]) ~ :not([hidden]) {
@@ -857,6 +873,11 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-red-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(185 28 28 / var(--tw-bg-opacity, 1));
 }
 
 .object-contain {
@@ -1013,6 +1034,11 @@ video {
   background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-red-800:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(153 27 27 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:underline:hover {
   text-decoration-line: underline;
 }
@@ -1059,6 +1085,11 @@ video {
   --tw-ring-color: rgb(229 231 235 / var(--tw-ring-opacity, 1));
 }
 
+.focus\:ring-red-300:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(252 165 165 / var(--tw-ring-opacity, 1));
+}
+
 @media (min-width: 640px) {
   .sm\:w-auto {
     width: auto;
@@ -1072,6 +1103,10 @@ video {
 
   .md\:block {
     display: block;
+  }
+
+  .md\:flex {
+    display: flex;
   }
 
   .md\:hidden {
@@ -1169,6 +1204,11 @@ video {
     background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1));
   }
 
+  .dark\:bg-red-600 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
+  }
+
   .dark\:text-blue-500 {
     --tw-text-opacity: 1;
     color: rgb(59 130 246 / var(--tw-text-opacity, 1));
@@ -1219,6 +1259,11 @@ video {
     background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));
   }
 
+  .dark\:hover\:bg-red-700:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(185 28 28 / var(--tw-bg-opacity, 1));
+  }
+
   .dark\:hover\:text-white:hover {
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity, 1));
@@ -1247,6 +1292,11 @@ video {
   .dark\:focus\:ring-gray-700:focus {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(55 65 81 / var(--tw-ring-opacity, 1));
+  }
+
+  .dark\:focus\:ring-red-900:focus {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(127 29 29 / var(--tw-ring-opacity, 1));
   }
 }
 

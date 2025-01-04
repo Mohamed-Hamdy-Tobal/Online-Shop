@@ -109,3 +109,37 @@ export const postLogin = async (req, res, next) => {
     },
   });
 };
+
+export const authLogout = async (req, res, next) => {
+  try {
+    // Destroy the session
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error destroying session:", err);
+        return handleResponse(res, {
+          status: STATUS_CODES.ERROR,
+          message: "Failed to log out. Please try again.",
+        });
+      }
+
+      // Clear the cookie in the browser
+      res.clearCookie("connect.sid", {
+        path: "/",
+      });
+
+      console.log("GOOD");
+
+      return handleResponse(res, {
+        success: true,
+        status: STATUS_CODES.SUCCESS,
+        message: "Logged out successfully.",
+      });
+    });
+  } catch (error) {
+    console.error("Logout Error:", error);
+    return handleResponse(res, {
+      status: STATUS_CODES.ERROR,
+      message: "An error occurred during logout.",
+    });
+  }
+};
