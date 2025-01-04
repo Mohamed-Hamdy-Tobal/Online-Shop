@@ -7,6 +7,8 @@ export const getAllProducts = async (req, res) => {
   try {
     const { page, limit, sort, category } = req.query;
 
+    console.log("Session id : " + req.session.userId);
+
     const categoriesEnums = ["tv", "fan", "washing"];
     const query =
       category && category !== "all" && categoriesEnums.includes(category)

@@ -1,4 +1,4 @@
-<form>
+<form id="loginForm">
   <div class="mb-6">
     <label
       for="email"
@@ -8,6 +8,7 @@
     <input
       type="email"
       id="email"
+      name="email"
       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       placeholder="john.doe@company.com"
       required
@@ -22,6 +23,7 @@
     <input
       type="password"
       id="password"
+      name="password"
       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       placeholder="•••••••••"
       required
@@ -45,3 +47,32 @@
     Submit
   </button>
 </form>
+
+<script>
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault(); // Prevent the default form submission
+
+    const formData = new FormData(e.target);
+
+    try {
+      const response = await fetch("/login", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert("Login successful!");
+        console.log("User data:", data);
+        // Redirect to a dashboard or home page
+        window.location.href = "/";
+      } else {
+        const error = await response.json();
+        alert(`Error: ${error.message}`);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred. Please try again.");
+    }
+  });
+</script>

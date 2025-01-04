@@ -98,6 +98,8 @@ export const postLogin = async (req, res, next) => {
     });
   }
 
+  req.session.userId = user._id;
+
   return handleResponse(res, {
     success: true,
     status: STATUS_CODES.SUCCESS,
