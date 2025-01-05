@@ -9,7 +9,8 @@ export const handleResponse = (
     error,
     renderView = null,
     redirectUrl = null,
-  }
+  },
+  req
 ) => {
   if (success) {
     if (redirectUrl) {
@@ -19,6 +20,7 @@ export const handleResponse = (
     if (renderView) {
       return res.render(renderView, {
         [dataKey]: data || [],
+        isLoggedIn: req?.session?.userId,
       });
     }
     return res.status(status || 200).json({

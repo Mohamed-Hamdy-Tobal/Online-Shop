@@ -98,7 +98,7 @@
   document
     .getElementById("signupForm")
     .addEventListener("submit", async (e) => {
-      e.preventDefault(); 
+      e.preventDefault();
 
       const password = document.getElementById("password").value;
       const confirmPassword = document.getElementById("confirm_password").value;
@@ -108,10 +108,10 @@
         return;
       }
 
-      console.log("e.target:",e.target)
-      
+      console.log("e.target:", e.target);
+
       const formData = new FormData(e.target);
-      console.log("formData:",formData)
+      console.log("formData:", formData);
 
       try {
         const response = await fetch("/signup", {
@@ -119,6 +119,7 @@
           body: formData,
         });
 
+        
         if (response.ok) {
           const data = await response.json();
           alert("Signup successful!");
@@ -126,11 +127,11 @@
           window.location.href = "/login";
         } else {
           const error = await response.json();
-          alert(`Error: ${error.message}`);
+          console.log("error 2:", error);
+          alert(`Error: ${error?.message}, ${error?.error[0]}`);
         }
       } catch (error) {
-        console.error("Error:", error);
-        alert("An error occurred. Please try again.");
+        console.log("Error:", error);
       }
     });
 </script>

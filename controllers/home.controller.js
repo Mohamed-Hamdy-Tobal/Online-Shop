@@ -26,12 +26,16 @@ export const getAllProducts = async (req, res) => {
 
     if (result.success) {
       console.log("products:", result);
-      return handleResponse(res, {
-        success: result.success,
-        data: result.data,
-        dataKey: "products",
-        renderView: "index",
-      });
+      return handleResponse(
+        res,
+        {
+          success: result.success,
+          data: result.data,
+          dataKey: "products",
+          renderView: "index",
+        },
+        req
+      );
     }
 
     return handleResponse(res, {

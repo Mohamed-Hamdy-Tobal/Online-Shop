@@ -42,7 +42,7 @@ export const postSignup = async (req, res, next) => {
     const isExistUser = await UserModel.findOne({ email: userData.email });
     if (isExistUser) {
       return handleResponse(res, {
-        status: 409,
+        status: STATUS_CODES.FAIL,
         message: "A user with this email already exists.",
       });
     }
