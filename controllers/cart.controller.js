@@ -37,13 +37,17 @@ export const getCart = async (req, res) => {
         message: "Cart not found",
       });
 
-    return handleResponse(res, {
-      success: true,
-      message: "Successfully Get You'r Cart",
-      data: {
-        cart,
+    return handleResponse(
+      res,
+      {
+        success: true,
+        message: "Successfully Get You'r Cart",
+        data: cart || null,
+        dataKey: "cart",
+        renderView: "cart",
       },
-    });
+      req
+    );
   } catch (error) {
     return handleResponse(res, {
       status: STATUS_CODES.ERROR,
@@ -142,23 +146,70 @@ export const removeFromCart = async (req, res) => {
       const item = cart.items[itemIndex];
       console.log("Product Item IS : ", item);
 
-      // Calc of the total price after subtracting it's price from cart
       cart.totalPrice -= Number(item.quantity) * Number(item.price);
 
-      // It deletes only one item from the array starting at the itemIndex
       cart.items.splice(itemIndex, 1);
-      await cart.save(); // save the document
     }
+    await cart.save();
 
-    return handleResponse(res, {
-      success: true,
-      status: STATUS_CODES.REMOVED,
-      message: "Product removed from cart",
-    });
+    return res.json({ message: "Product removed from cart" });
   } catch (error) {
+    console.log("ERROR IS :", error);
     return handleResponse(res, {
       status: STATUS_CODES.ERROR,
       message: "Error fetching cart",
+      error: error.message,
+    });
+  }
+};
+
+export const editCartQuantity = async (req, res) => {
+  const { productId, quantity } = req.body;
+  const userId = req.session.userId;
+
+  console.log("userId IS : ", userId);
+  console.log("req.body IS : ", req.body);
+
+  if (isNaN(quantity) || quantity <= 0) {
+    return res
+      .status(400)
+      .json({ message: "Quantity must be a positive number." });
+  }
+
+  try {
+    const cart = await CartModel.findOne({ userId });
+    console.log("CART TO Edit IS : ", cart);
+    if (!cart)
+      return handleResponse(res, {
+        status: STATUS_CODES.NOTFOUND,
+        message: "Cart not found",
+      });
+
+    const itemIndex = cart.items.findIndex(
+      (item) => item.productId.toString() === productId
+    );
+    console.log("itemIndex IS : ", itemIndex);
+
+    if (itemIndex > -1) {
+      const item = cart.items[itemIndex];
+      console.log("Product Item IS : ", item);
+
+      const priceDifference =
+        parseInt(quantity) * parseInt(item.price) -
+        parseFloat(item.quantity) * parseFloat(item.price);
+      cart.totalPrice += priceDifference;
+
+      cart.items[itemIndex].quantity = Number(quantity);
+
+      console.log("Updated Product Item IS : ", cart.items[itemIndex]);
+    }
+    await cart.save();
+
+    return res.json({ message: "Cart updated successfully" });
+  } catch (error) {
+    return handleResponse(res, {
+      status: STATUS_CODES.ERROR,
+      message: "Error Edit In Cart",
       error: error.message,
     });
   }
