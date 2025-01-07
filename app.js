@@ -10,6 +10,7 @@ import { authRouter } from "./routes/auth.route.js";
 import { STATUS_CODES } from "./util/StatusCodes.js";
 import ConnectMongoDBSession from "connect-mongodb-session";
 import session from "express-session";
+import { cartRouter } from "./routes/cart.route.js";
 
 dotenv.config();
 
@@ -64,6 +65,7 @@ app.set("views", "views");
 app.use("/", homeRouter);
 app.use("/", authRouter);
 app.use("/product", productRouter);
+app.use("/cart", cartRouter);
 
 app.all("*", (req, res, next) => {
   return res.status(404).json({
