@@ -3,7 +3,7 @@ export const handleResponse = (
   {
     success = false,
     dataKey = "data",
-    data,
+    data = null,
     message,
     status,
     error,
