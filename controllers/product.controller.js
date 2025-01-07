@@ -8,5 +8,5 @@ export const getProduct = async (req, res) => {
     data: product || null,
     dataKey: "product",
     renderView: "product",
-  });
+  }, req);
 };
