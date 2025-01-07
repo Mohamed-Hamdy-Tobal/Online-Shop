@@ -13,6 +13,52 @@
       <%= product.description %>
     </p>
     <p class="text-[#1d4ed8] text-xl">Price : <%= product.price %> $</p>
+
+    <form class="cartForm mt-4 flex items-center gap-3">
+      <input
+        id="productId"
+        type="hidden"
+        name="productId"
+        value="<%= product.id %>"
+      />
+      <input
+        id="price"
+        type="hidden"
+        name="price"
+        value="<%= product.price %>"
+      />
+      <input id="name" type="hidden" name="name" value="<%= product.name %>" />
+
+      <div class="flex items-center">
+        <button
+          type="button"
+          class="decrement-button px-2 py-1 bg-gray-300 text-gray-800 rounded-l"
+        >
+          -
+        </button>
+        <input
+          type="number"
+          name="quantity"
+          class="cart-input h-[32px] w-16 text-center border border-gray-300"
+          value="1"
+          min="1"
+          max="5"
+        />
+        <button
+          type="button"
+          class="increment-button px-2 py-1 bg-gray-300 text-gray-800 rounded-r"
+        >
+          +
+        </button>
+      </div>
+
+      <button
+        type="submit"
+        class="flex items-center justify-center p-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full"
+      >
+        Add to Cart
+      </button>
+    </form>
   </div>
 </div>
 <% } else { %>
@@ -23,3 +69,51 @@
   <span class="font-medium">Danger alert!</span> Product Not Found
 </div>
 <% } %>
+
+<script>
+  const decrementButton = document.querySelector(".decrement-button");
+  const incrementButton = document.querySelector(".increment-button");
+  const cartInput = document.querySelector(".cart-input");
+  const cartForm = document.querySelector(".cartForm");
+
+  decrementButton.addEventListener("click", () => {
+    let currentValue = parseInt(cartInput.value);
+    if (currentValue > 1) {
+      cartInput.value = currentValue - 1;
+    }
+  });
+
+  incrementButton.addEventListener("click", () => {
+    let currentValue = parseInt(cartInput.value);
+    if (currentValue < 5) {
+      cartInput.value = currentValue + 1;
+    }
+  });
+
+  cartForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(cartForm);
+
+    try {
+      const response = await fetch("/cart", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Response data:", data);
+
+        cartInput.value = 1;
+        alert(data.message);
+      } else {
+        const error = await response.json();
+        alert(`Error: ${error.message}`);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred. Please try again.");
+    }
+  });
+</script>
