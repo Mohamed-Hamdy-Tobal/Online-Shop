@@ -33,7 +33,7 @@
         </div>
 
         <div class="w-full">
-          <form class="flex flex-col gap-2 w-full" method="POST">
+          <form id="cartForm" class="cartForm flex flex-col gap-2 w-full">
             <div>
               <label for="cart-input" class="sr-only"
                 >Choose cart number:</label
@@ -61,9 +61,12 @@
                 </button>
 
                 <input
-                  type="text"
+                  type="number"
+                  name="quantity"
                   class="cart-input bg-gray-50 border-x-0 border-gray-300 h-11 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   value="1"
+                  min="1"
+                  id="quantity"
                   required
                 />
 
@@ -89,6 +92,27 @@
                 </button>
               </div>
             </div>
+
+            <!-- الحقول المخفية لإرسال البيانات الإضافية -->
+            <input
+              id="productId"
+              type="hidden"
+              name="productId"
+              value="<%= product.id %>"
+            />
+            <input
+              id="price"
+              type="hidden"
+              name="price"
+              value="<%= product.price %>"
+            />
+            <input
+              id="name"
+              type="hidden"
+              name="name"
+              value="<%= product.name %>"
+            />
+
             <button
               type="submit"
               class="flex items-center justify-center p-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full"
@@ -116,6 +140,7 @@
   const incrementButtons = document.querySelectorAll(".increment-button");
   const cartInputs = document.querySelectorAll(".cart-input");
 
+  // Decrement button functionality
   decrementButtons.forEach((button, index) => {
     button.addEventListener("click", () => {
       let currentValue = parseInt(cartInputs[index].value);
@@ -125,11 +150,46 @@
     });
   });
 
+  // Increment button functionality
   incrementButtons.forEach((button, index) => {
     button.addEventListener("click", () => {
       let currentValue = parseInt(cartInputs[index].value);
       if (currentValue < 5) {
         cartInputs[index].value = currentValue + 1;
+      }
+    });
+  });
+
+  // Handle all forms with class "cartForm"
+  const cartForms = document.querySelectorAll(".cartForm");
+
+  cartForms.forEach((form, index) => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault(); // Prevent the default form submission
+
+      const formData = new FormData(e.target);
+
+      console.log("formData:", formData);
+
+      try {
+        const response = await fetch("/cart", {
+          method: "POST",
+          body: formData,
+        });
+        console.log("response:", response);
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("User data:", data);
+          cartInputs[index].value = 1;
+          alert(data.message);
+        } else {
+          const error = await response.json();
+          alert(`Error: ${error.message}`);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again.");
       }
     });
   });
