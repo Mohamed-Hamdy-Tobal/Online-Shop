@@ -32,10 +32,17 @@ export const getCart = async (req, res) => {
     const cart = await CartModel.findOne({ userId }).select("-__v -userId");
     console.log("CART IS : ", cart);
     if (!cart)
-      return handleResponse(res, {
-        status: STATUS_CODES.NOTFOUND,
-        message: "Cart not found",
-      });
+      return handleResponse(
+        res,
+        {
+          success: true,
+          message: "Cart not found",
+          data: null,
+          dataKey: "cart",
+          renderView: "cart",
+        },
+        req
+      );
 
     return handleResponse(
       res,
