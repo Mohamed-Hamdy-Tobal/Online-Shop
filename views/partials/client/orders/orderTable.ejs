@@ -1,0 +1,111 @@
+<div class="py-5">
+  <div class="relative overflow-x-auto">
+    <table
+      class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+    >
+      <thead
+        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      >
+        <tr>
+          <th scope="col" class="px-6 py-3">No</th>
+          <th scope="col" class="px-6 py-3">Address</th>
+          <th scope="col" class="px-6 py-3">Items Count</th>
+          <th scope="col" class="px-6 py-3">Total Price</th>
+          <th scope="col" class="px-6 py-3">Payment Method</th>
+          <th scope="col" class="px-6 py-3">Status</th>
+          <th scope="col" class="px-6 py-3">Cancel Order</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (orders && orders.length > 0) { %> <% orders.map((order, index) =>
+        { %>
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            #<%= index + 1 %>
+          </td>
+          <td scope="row" class="px-6 py-4">
+            <%= order.address.country %>, <%= order.address.city %>, <%=
+            order.address.street %>
+          </td>
+          <td class="px-6 py-4"><%= order.items.length %></td>
+          <td class="px-6 py-4">EGP <%= order.totalPrice %></td>
+          <td class="px-6 py-4"><%= order.paymentMethod %></td>
+          <td class="px-6 py-4 capitalize">
+            <% if (order.status === "Pending") { %>
+            <span
+              class="bg-gray-100 text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+              >Pending</span
+            >
+            <% } else if (order.status === "Completed") { %>
+            <span
+              class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+              >Completed</span
+            >
+            <% } else if (order.status === "Canceled") { %>
+            <span
+              class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
+              >Canceled</span
+            >
+            <% } %>
+          </td>
+          <td class="flex justify-center items-center p-3">
+            <button
+              type="button"
+              data-order-id="<%= order._id %>"
+              class="cancel-quantity focus:outline-none text-white bg-red-700 hover:opacity-90 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5"
+              <%= (order.status === "Canceled" || order.status === "Completed") ? "disabled" : "" %>
+            >
+              Cancel
+            </button>
+          </td>
+        </tr>
+        <% }); %> <% } else { %>
+        <tr>
+          <td colspan="6" class="p-4 text-center w-full">
+            <div
+              class="p-4 w-full mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+              role="alert"
+            >
+              <span class="font-medium">Danger alert!</span> No orders found.
+            </div>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll(".cancel-quantity").forEach((button, index) => {
+    button.addEventListener("click", async () => {
+      const orderId = button.dataset.orderId;
+
+      try {
+        const response = await fetch("/orders/cancel_order/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            orderId: orderId,
+          }),
+        });
+
+        const data = await response.json();
+        console.log("data is :", data);
+        if (response) {
+          alert(data.message);
+          location.reload();
+        } else {
+          alert("Failed to update quantity");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while updating the quantity");
+      }
+    });
+  });
+</script>
