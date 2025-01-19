@@ -15,14 +15,14 @@ export const getSignup = async (req, res, next) => {
   return handleResponse(res, {
     success: true,
     renderView: "signup",
-  });
+  }, req);
 };
 
 export const getLogin = async (req, res, next) => {
   return handleResponse(res, {
     success: true,
     renderView: "login",
-  });
+  }, req);
 };
 
 export const postSignup = async (req, res, next) => {
@@ -109,7 +109,7 @@ export const postLogin = async (req, res, next) => {
     data: {
       user,
     },
-  });
+  }, req);
 };
 
 export const authLogout = async (req, res, next) => {

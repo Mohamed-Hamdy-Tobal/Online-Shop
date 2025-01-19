@@ -22,7 +22,7 @@ export const handleResponse = (
         [dataKey]: data || [],
         isLoggedIn: req?.session?.userId,
         isAdmin: req?.session?.isAdmin,
-        currentPath: req.originalUrl
+        currentPath: req?.originalUrl || "/"
       });
     }
     return res.status(status || 200).json({

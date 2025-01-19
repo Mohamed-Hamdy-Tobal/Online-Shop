@@ -4,5 +4,5 @@ export const checkoutCart = async (req, res, next) => {
   return handleResponse(res, {
     success: true,
     renderView: "checkout",
-  });
+  }, req);
 };
