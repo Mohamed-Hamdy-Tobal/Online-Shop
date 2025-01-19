@@ -23,8 +23,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  access_token: {
-    type: String,
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
 });
 

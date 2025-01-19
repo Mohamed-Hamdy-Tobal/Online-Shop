@@ -66,6 +66,7 @@ export const postSignup = async (req, res, next) => {
           firstName: newUser.firstName,
           lastName: newUser.lastName,
           email: newUser.email,
+          isAdmin: newUser.isAdmin,
         },
       },
     });
@@ -99,6 +100,7 @@ export const postLogin = async (req, res, next) => {
   }
 
   req.session.userId = user._id;
+  req.session.isAdmin = user.isAdmin;
 
   return handleResponse(res, {
     success: true,
