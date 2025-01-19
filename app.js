@@ -12,6 +12,7 @@ import ConnectMongoDBSession from "connect-mongodb-session";
 import session from "express-session";
 import { cartRouter } from "./routes/cart.route.js";
 import { ordersRouter } from "./routes/orders.route.js";
+import { adminRouter } from "./routes/admin.route.js";
 
 dotenv.config();
 
@@ -68,6 +69,7 @@ app.use("/", authRouter);
 app.use("/product", productRouter);
 app.use("/cart", cartRouter);
 app.use("/orders", ordersRouter);
+app.use("/admin", adminRouter);
 
 app.all("*", (req, res, next) => {
   return res.status(404).json({
