@@ -25,7 +25,6 @@ export const getAllProducts = async (req, res) => {
     const result = await paginate(ProductsModel, query, options);
 
     if (result.success) {
-      console.log("products:", result);
       return handleResponse(
         res,
         {

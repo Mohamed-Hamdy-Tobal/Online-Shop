@@ -93,14 +93,23 @@ export const createOrder = async (req, res) => {
 // Get User's Orders
 export const getOrders = async (req, res) => {
   const userId = req.session.userId;
+  const isAdmin = req.session.isAdmin;
 
   try {
-    const orders = await OrderModel.find({ userId }).select("-__v");
+    const query = isAdmin ? {} : { userId };
+    const orders = await OrderModel.find(query).select("-__v");
     if (!orders || orders.length === 0) {
-      return handleResponse(res, {
-        status: STATUS_CODES.NOTFOUND,
-        message: "No orders found",
-      });
+      return handleResponse(
+        res,
+        {
+          success: true,
+          message: "Successfully retrieved orders",
+          data: [],
+          dataKey: "orders",
+          renderView: "orders",
+        },
+        req
+      );
     }
 
     return handleResponse(
@@ -156,7 +165,7 @@ export const updateOrderStatus = async (req, res) => {
   }
 };
 
-// Cancel Order 
+// Cancel Order
 export const cancelOrder = async (req, res) => {
   const { orderId } = req.body;
   const userId = req.session.userId;
