@@ -1,8 +1,16 @@
 import express from "express";
-import { getAddProduct } from "../controllers/admin.controller.js";
+import {
+  createProduct,
+  getAddProduct,
+} from "../controllers/admin.controller.js";
+import { isAdmin } from "../middleware/auth.middleware.js";
+import { upload } from "../middleware/multerMiddleware.middleware.js";
 
 const router = express.Router();
 
-router.route("/add-product").get(getAddProduct).post(getAddProduct);
+router
+  .route("/add-product")
+  .get(getAddProduct)
+  .post(isAdmin, upload.single("image"), createProduct);
 
 export const adminRouter = router;

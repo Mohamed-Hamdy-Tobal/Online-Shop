@@ -35,6 +35,8 @@ app.use(express.json());
 app.use(express.static(join(__dirname, "assets")));
 app.use(express.static(join(__dirname, "public")));
 app.use(express.static(join(__dirname, "images")));
+app.use("/api/uploads", express.static(join(__dirname, "uploads")));
+app.use("/uploads", express.static(join(__dirname, "uploads")));
 
 // Configure session store
 const store = new MongoDBStore({
